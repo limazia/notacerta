@@ -1,5 +1,7 @@
 "use client";
 
+import "@/app/styles/github-markdown.css"
+
 import { useEffect } from "react";
 import { toast } from "sonner";
 import { useParams, useRouter } from "next/navigation";

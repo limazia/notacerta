@@ -11,6 +11,9 @@ import {
   Sparkle,
 } from "lucide-react";
 import { format, parseISO, isValid } from "date-fns";
+import MarkdownComponent from "react-markdown";
+import rehypeHighlight from "rehype-highlight";
+import remarkGfm from "remark-gfm";
 
 import { Invoice } from "@/interfaces/invoice";
 
@@ -239,8 +242,10 @@ export function InvoiceCard({ invoice }: InvoiceCardProps) {
                 Resumo IA
               </h3>
 
-              <div className="text-sm text-muted-foreground whitespace-pre-line">
-                {invoice.summary_ia}
+              <div className="markdown-body text-sm text-muted-foreground">
+                <MarkdownComponent rehypePlugins={[rehypeHighlight, remarkGfm]}>
+                  {invoice.summary_ia}
+                </MarkdownComponent>
               </div>
             </div>
           </>
