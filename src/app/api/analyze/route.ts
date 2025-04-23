@@ -34,12 +34,12 @@ export async function POST(request: Request) {
     const nfeTag = nfeProc?.NFe;
     const infNFe = nfeTag?.infNFe;
 
-    if (!infNFe) {
-      return NextResponse.json(
-        { message: "Formato XML inválido ou nota fiscal não reconhecida" },
-        { status: 400 }
-      );
-    }
+    // if (!infNFe) {
+    //   return NextResponse.json(
+    //     { message: "Formato XML inválido ou nota fiscal não reconhecida" },
+    //     { status: 400 }
+    //   );
+    // }
 
     const invoiceId = infNFe.Id || "";
 
