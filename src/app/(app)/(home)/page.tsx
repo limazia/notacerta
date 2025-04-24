@@ -53,7 +53,7 @@ export default function Home() {
       <Button
         type="submit"
         className="w-full h-16"
-        variant="outline"
+        variant="default"
         disabled={isSubmitting || isPending || !isDirty || !isValid}
       >
         {isSubmitting || isPending ? (
