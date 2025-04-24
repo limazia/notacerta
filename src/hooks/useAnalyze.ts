@@ -39,17 +39,12 @@ export function useAnalyze() {
     },
     onError(error: AxiosError<{ message: string }>) {
       const message = error?.response?.data?.message || "Erro desconhecido";
-
       toast.error(message);
     },
   });
 
   async function handleAnalyze(data: AnalyzeXMLSchema) {
-    toast.promise(analyzeXMLFn(data), {
-      loading: "Analisando XML...",
-      success: "Análise concluída com sucesso!",
-      //error: "Não foi possível encontrar dados válidos no XML.",
-    });
+    await analyzeXMLFn(data);
   }
 
   return {
