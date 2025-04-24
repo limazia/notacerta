@@ -1,11 +1,13 @@
-import { api } from "@/lib/axios";
+import axios from "axios";
 
-interface AnalyzeXMLResponse {
+import type { AnalyzeXMLSchema } from "@/schemas/analyze.schema";
+
+interface AnalyzeResponse {
   id: string;
 }
 
-export async function analyzeXML(payload: { xml: string }) {
-  const { data } = await api.post<AnalyzeXMLResponse>("/analyze", payload);
+export async function analyzeXML(payload: AnalyzeXMLSchema) {
+  const { data } = await axios.post<AnalyzeResponse>("/api/analyze", payload);
 
   return data;
 }
