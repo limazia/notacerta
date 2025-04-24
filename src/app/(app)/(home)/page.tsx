@@ -1,13 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import { Loader2 } from "lucide-react";
 
 import { useAnalyze } from "@/hooks/useAnalyze";
 
 import { Button } from "@/components/ui/button";
-import { DragDropZone } from "@/components/drag-drop-zone";
+import { DragDropZone } from "./_components/drag-drop-zone";
+import { LoadingAnalysis } from "./_components/loading-analysis";
 
 export default function Home() {
+  const [isFinished, setIsFinished] = useState(false);
+
   const {
     register,
     errors,
@@ -30,6 +34,11 @@ export default function Home() {
 
   async function onAnalyze(data: { xml: string }) {
     await handleAnalyze(data);
+    setIsFinished(true);
+  }
+
+  if (isSubmitting || isPending) {
+    return <LoadingAnalysis isLoading={true} isFinished={isFinished} />;
   }
 
   return (
@@ -46,7 +55,10 @@ export default function Home() {
         </p>
 
         {errors.xml && (
-          <p className="text-sm text-red-500">{errors.xml.message}</p>
+          <p className="text-sm text-red-500">
+            {errors.xml?.message ||
+              "Ocorreu um erro ao processar o arquivo. Tente novamente."}
+          </p>
         )}
       </div>
 
