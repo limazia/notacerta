@@ -1,3 +1,7 @@
+import { format, parseISO, isValid } from "date-fns";
+import MarkdownComponent from "react-markdown";
+import rehypeHighlight from "rehype-highlight";
+import remarkGfm from "remark-gfm";
 import {
   Info,
   Calendar,
@@ -9,11 +13,8 @@ import {
   AlertCircle,
   HelpCircle,
   Sparkle,
+  ShoppingBag,
 } from "lucide-react";
-import { format, parseISO, isValid } from "date-fns";
-import MarkdownComponent from "react-markdown";
-import rehypeHighlight from "rehype-highlight";
-import remarkGfm from "remark-gfm";
 
 import { Invoice } from "@/interfaces/invoice";
 
@@ -185,71 +186,81 @@ export function InvoiceCard({ invoice }: InvoiceCardProps) {
 
         <Separator className="my-6" />
 
-        {/* Produto */}
-        <div className="mb-6">
-          <h3 className="font-medium text-sm text-muted-foreground mb-2">
-            Detalhes do Produto
-          </h3>
-          <div className="bg-gray-100 p-4 rounded-md border">
-            <p className="font-medium">
-              {invoice.product_sold || "Produto não especificado"}
-            </p>
-          </div>
-        </div>
-
-        {/* Financeiro */}
-        <div className="bg-gray-50 p-4 rounded-md border">
-          <h3 className="font-medium mb-4 flex items-center">
-            <DollarSign className="h-5 w-5 mr-2 text-green-600" />
-            Detalhes Financeiros
-          </h3>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div>
-              <p className="text-sm text-muted-foreground">Valor do Produto</p>
-              <p className="font-semibold">
-                {invoice.product_price ? `R$ ${invoice.product_price}` : "—"}
-              </p>
-            </div>
-            <div>
-              <p className="text-sm text-muted-foreground">Desconto</p>
-              <p className="font-semibold text-red-500">
-                {invoice.discount ? `R$ ${invoice.discount}` : "—"}
-              </p>
-            </div>
-            <div className="bg-green-50 p-3 rounded-md border border-green-200">
-              <p className="text-sm text-muted-foreground">Valor Total</p>
-              <p className="font-bold text-lg text-green-600">
-                {invoice.total_value ? `R$ ${invoice.total_value}` : "—"}
+        <div className="space-y-6">
+          {/* Produto */}
+          <div>
+            <h3 className="font-medium mb-4 flex items-center">
+              <ShoppingBag className="h-5 w-5 mr-2 text-green-600" />
+              Detalhes do Produto
+            </h3>
+            <div className="bg-gray-100 p-4 rounded-md border">
+              <p className="font-medium">
+                {invoice.product_sold || "Produto não especificado"}
               </p>
             </div>
           </div>
-          <div className="mt-4">
-            <p className="text-sm text-muted-foreground">Forma de Pagamento</p>
-            <p className="italic">
-              {invoice.payment_method || "Não especificada"}
-            </p>
-          </div>
-        </div>
 
-        {/* Resumo IA */}
-        {invoice.summary_ia && (
-          <>
-            <Separator className="my-6" />
-
+          {/* Financeiro */}
+          <div>
+            <h3 className="font-medium mb-4 flex items-center">
+              <DollarSign className="h-5 w-5 mr-2 text-green-600" />
+              Detalhes Financeiros
+            </h3>
             <div className="bg-gray-50 p-4 rounded-md border">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                  <p className="text-sm text-muted-foreground">
+                    Valor do Produto
+                  </p>
+                  <p className="font-semibold">
+                    {invoice.product_price
+                      ? `R$ ${invoice.product_price}`
+                      : "—"}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Desconto</p>
+                  <p className="font-semibold text-red-500">
+                    {invoice.discount ? `R$ ${invoice.discount}` : "—"}
+                  </p>
+                </div>
+                <div className="bg-green-50 p-3 rounded-md border border-green-200">
+                  <p className="text-sm text-muted-foreground">Valor Total</p>
+                  <p className="font-bold text-lg text-green-600">
+                    {invoice.total_value ? `R$ ${invoice.total_value}` : "—"}
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4">
+                <p className="text-sm text-muted-foreground">
+                  Forma de Pagamento
+                </p>
+                <p className="italic">
+                  {invoice.payment_method || "Não especificada"}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Resumo IA */}
+          {invoice.summary_ia && (
+            <div>
               <h3 className="font-medium mb-4 flex items-center">
                 <Sparkle className="h-5 w-5 mr-2 text-green-600" />
                 Resumo IA
               </h3>
-
-              <div className="markdown-body text-sm text-muted-foreground">
-                <MarkdownComponent rehypePlugins={[rehypeHighlight, remarkGfm]}>
-                  {invoice.summary_ia}
-                </MarkdownComponent>
+              <div className="bg-gray-50 p-4 rounded-md border">
+                <div className="markdown-body text-sm text-muted-foreground">
+                  <MarkdownComponent
+                    rehypePlugins={[rehypeHighlight, remarkGfm]}
+                  >
+                    {invoice.summary_ia}
+                  </MarkdownComponent>
+                </div>
               </div>
             </div>
-          </>
-        )}
+          )}
+        </div>
       </CardContent>
     </Card>
   );
